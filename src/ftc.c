@@ -48,7 +48,6 @@ int main(int argc,char* argv[],char ** envp)
         return 0;
     }
     
-
     if (!strcmp(argv[1],"-test"))
     {
         test(argv[2],argv[3]);
