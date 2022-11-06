@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lsRec.h"
 
 int isElement(char** list,char* element)
 {
@@ -48,9 +49,10 @@ int main(int argc,char* argv[],char ** envp)
         return 0;
     }
     
-    if (!strcmp(argv[1],"-test"))
+    if (!strcmp(argv[2],"-test"))
     {
         test(argv[2],argv[3]);
+        lsrec(".",0); //Test du ls récursif
     }
     /*
     ET/OU param -option [param]

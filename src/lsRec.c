@@ -3,6 +3,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <errno.h>
+#include "lsRec.h"
 
 void tabulation(int tab){
 	for (int i=0; i<tab; i++){
@@ -33,11 +34,11 @@ void lsrec(char *dir, int tab){
 			//If the directory is not readable then throw error and exit
 			perror("Unable to read directory");
 		}
-		exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE); //ligne de code à passer en commentaire pour ignorer les répertoires innaccessibles 
 	}
 
 	int n = scandir(dir, &namelist, 0, alphasort);
-	if (n==-1){  // Si y'a une erreur quelconque
+	if (n==-1){  // Si y'a une erreur quelconque on skip cette apel récursif
 		printf("\nERROR skip this folder\n");
 		return;
 		}
@@ -45,17 +46,18 @@ void lsrec(char *dir, int tab){
         char letter[]= {namelist[i]->d_name[0], '\0'};
         
         if (!strcmp(letter,".")){
-            continue; // On n'affiche pas les dossiers et fichiers cachés.
+            continue; // Si on tombe sur un dossier ou fichier caché, on ne l'affiche pas.
         }
-		tabulation(tab);
+
+		tabulation(tab); //Permet d'indenter l'affichage
 		char * name = namelist[i]->d_name;
 		if (namelist[i]->d_type!=4){
-			printf("%s \n", name);
+			printf("%s/%s \n", dir,name);
 			continue;
 		}
 		//On met un peu de couleur quand on affiche un dossier
 		printf("\033[0;34m");
-		printf("%s \n", name);
+		printf("%s/%s \n", dir,name);
 		printf("\033[0;37m");
 		
 		char str1[255];
@@ -67,12 +69,4 @@ void lsrec(char *dir, int tab){
 		tab--;
 	}
     free(namelist);    
-}
-
-int main(int argc,char *argv[])	
-{
-	// _ls(".");
-
-    lsrec(argv[1], 0);
-	return EXIT_SUCCESS;
 }

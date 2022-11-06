@@ -1,9 +1,8 @@
 make : 
-	gcc ./src/ftc.c -o ftc
+	gcc ./src/ftc.c ./src/lsRec.h ./src/lsRec.c -o ftc
 	chmod +x ftc
 	sudo mv ftc /usr/bin/
 	
-
 ls:
 	gcc ./src/lsRec.c -o lsrec
 	chmod +x lsrec
