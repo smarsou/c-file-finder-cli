@@ -39,9 +39,10 @@ int main(int argc,char* argv[],char ** envp)
         printf("  argv[%d]   %s\n", count, argv[count]);
     printf("  argc   %d\n", argc);
     printf("\n\033[0;37m");
+
     //Si il n'y a pas d'option
         if (argc == 2){
-            lsrec(argv[1],0,"NULL", NULL); //Test du ls récursif sans filtre 
+            lsrec(argv[1],0); //Test du ls récursif sans filtre 
             return EXIT_SUCCESS;
         }
 
@@ -63,15 +64,17 @@ int main(int argc,char* argv[],char ** envp)
         for (int i =0; i<argc-3; i++){
             paramsOption[i] = argv[i+3];
         }
+
         //Execution du cas où l'option est -name
         if (!strcmp(argv[2],"-name")){
             if (argc < 4){
                 printf("Erreur: Spécifiez un nom de fichier\n");
                 return EXIT_FAILURE;
             }
-            lsrec(argv[1],0,option,paramsOption);
+            find(argv[1],option,paramsOption);
         }
 
+    
         //Execution du cas où l'option est -test
         if (!strcmp(argv[2],"-test"))
         {
