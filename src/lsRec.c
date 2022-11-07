@@ -21,18 +21,17 @@ int filterName(char *name, char *pattern){
 }
 
 int filterSize(int tailleDuFichier,char *taillePattern){
-	printf("JE USIS DANS SIZE\n");
 	return 1;
 }
 
 //Fonction de filtre du fichier name en fonction de l'option et des paramètres d'option
 int filter(char *option, char * paramsOption[], struct dirent *namelistEl){
-	printf("JE USIS DANS FILTER\n");
+	
 	if (!strcmp(option,"-name")){ //Si on filtre par nom (-name)
 		return filterName(namelistEl->d_name, paramsOption[0]);
 	}
 	if (!strcmp(option,"-size")){ //Si on filtre par nom (-name)
-		printf("JE USIS DANS SIZE\n");
+		
 		return filterSize(10,paramsOption[0]);
 	}
 	else{
@@ -168,7 +167,7 @@ void lsrec(char *dir, int tab){
 		strcat(str1, "/");
 		strcat(str1,name);
 		tab++;
-		lsrec(str1,tab,option, paramsOption);
+		lsrec(str1,tab);
 		tab--;
 	}
     free(namelist);    
