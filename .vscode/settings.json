@@ -2,6 +2,7 @@
     "files.associations": {
         "cstdlib": "c",
         "typeinfo": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "dirent.h": "c"
     }
 }
