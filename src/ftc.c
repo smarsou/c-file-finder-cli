@@ -113,6 +113,11 @@ int main(int argc,char* argv[],char ** envp)
                 printf("Erreur: Spécifiez un nom de fichier\n");
                 return EXIT_FAILURE;
             }
+            if (argc>5)
+            {
+                printf("Erreur: Trop de paramètres\n");
+                return EXIT_FAILURE;   
+            }
             find(argv[1],option,paramsOption);
         }
 
