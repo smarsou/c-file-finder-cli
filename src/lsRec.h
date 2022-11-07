@@ -7,4 +7,7 @@ void find(char *dir,  char *option, char * paramsOption[]);
 int filter(char *option, char * paramsOption[],struct dirent *namelistEl);
 int filterSize(int tailleDuFichier,char *taillePattern);
 int filterName(char *name, char *pattern);
+long int FileSize(char file[]);
+int isElement(char** list,char* element);
+
 #endif

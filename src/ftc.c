@@ -3,28 +3,7 @@
 #include <string.h>
 #include "lsRec.h"
 
-int isElement(char** list,char* element)
-{
-    /*
-    printf("\nsizeof list =%ld\n",sizeof(list));
-    printf("\nnumber of elts list =%ld\n",sizeof(list)/sizeof(list[0]));
-    printf("\nsizeof list0 =%ld\n",sizeof(list[0]));
-    */
-    int len=atoi(list[0]);
-    for (int i = 1; i < len; i++)
-    {
-        
-        /*printf("\nlist[%d] =%s\n",i,list[i]);
-        printf("\nelement =%s\n",element);*/
-        if (!strcmp(list[i],element))
-        {
-            return 1;
-        }
-        
-    }
-    return 0;
-    
-}
+
 
 void test(char* xxxx,char * yyyy)
 {
@@ -81,14 +60,20 @@ int main(int argc,char* argv[],char ** envp)
             while (isElement(Numbers,p))
             {
                 p[0]=argv[3][index];
-                printf("\n argv[3][%d] =%c\n",index,argv[3][index]);
+                //printf("\n argv[3][%d] =%c\n",index,argv[3][index]);
                 index++;
             }
+            //printf("\nstrlen(argv[3])=%ld ,index =%d \n",strlen(argv[3]),index);
             char* Taille[5]={"5","c","k","K","M"};
             if (isElement(Taille,p))
             {
-                printf("\n------------------------------Paramètre de l'option -size reconnu-------------------\n");
+                //printf("\n------------------------------Paramètre de l'option -size reconnu-------------------\n");
             }
+            else if (strlen(argv[3])==index-1)
+            {
+                //printf("\n------------------------------Paramètre de l'option -size reconnu- null------------------\n");
+            }
+            
             else
             {
                 printf("\n argv[3][index] =%d\n",argv[3][index]);
@@ -126,6 +111,19 @@ int main(int argc,char* argv[],char ** envp)
         if (!strcmp(argv[2],"-test"))
         {
             test(argv[2],argv[3]);
+        }
+        //Execution du cas où l'option est -size
+        if (!strcmp(argv[2],"-size")){
+            if (argc < 4){
+                printf("Erreur: Spécifiez une taille de fichier\n");
+                return EXIT_FAILURE;
+            }
+            if (argc>5)
+            {
+                printf("Erreur: Trop de paramètres\n");
+                return EXIT_FAILURE;   
+            }
+            find(argv[1],option,paramsOption);
         }
 
     /*
