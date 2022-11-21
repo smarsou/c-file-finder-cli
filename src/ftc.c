@@ -7,7 +7,7 @@
 
 void test(char* xxxx,char * yyyy)
 {
-    printf("la valeur du flag %s est %s\n",xxxx,yyyy);
+    printf("La valeur du flag %s est %s\n",xxxx,yyyy);
 }
 
 
@@ -110,7 +110,17 @@ int main(int argc,char* argv[],char ** envp)
         //Execution du cas où l'option est -test
         if (!strcmp(argv[2],"-test"))
         {
-            test(argv[2],argv[3]);
+            if (isElement(Options,argv[3]))
+            {
+                test(argv[3],argv[4]);
+            }
+            else
+            {
+                printf("Le flag %s n'est pas correct",argv[3]);
+            }
+            
+            
+
         }
         //Execution du cas où l'option est -size
         if (!strcmp(argv[2],"-size")){
