@@ -192,7 +192,12 @@ void find(char *dir, char *option, char * paramsOption[]){
     free(namelist);    
 }
 
-
+void ls(char* dir, int tab){
+	printf("\033[0;34m");
+	printf("%s/ \n", dir);
+	printf("\033[0;37m");
+	lsrec(dir, tab);
+}
 
 void lsrec(char *dir, int tab){
     struct dirent *d;

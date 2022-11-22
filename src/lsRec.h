@@ -3,6 +3,7 @@
 
 void tabulation(int tab);
 void lsrec(char *dir, int tab);
+void ls(char *dir, int tab);
 void find(char *dir,  char *option, char * paramsOption[]);
 int filter(char *option, char * paramsOption[],struct dirent *namelistEl);
 int filterSize(int tailleDuFichier,char *taillePattern);
