@@ -178,7 +178,7 @@ void find(char *dir, char *option, char * paramsOption[]){
 		char * name = namelist[i]->d_name;
 		if (namelist[i]->d_type!=4){	// Si on lis un fichier
 			if (filter(option, paramsOption, namelist[i])){	//Si le fichier correspond à la demande de l'utilisateur (flag et paramètres).
-				printf("%s/%s \n", dir,name);	//Alors afficher le chemin
+				printf("%s/%s\n", dir,name);	//Alors afficher le chemin
 			}
 			continue;
 			}
