@@ -51,8 +51,9 @@ int main(int argc,char* argv[],char ** envp)
 
         }
         //vérifier le bon paramétrage de -size
-        if (!strcmp(argv[2],"-size") && ((argv[3][0]=='+' || argv[3][0]=='-')))
+        if (!strcmp(argv[2],"-size"))
         {
+            /*
             int index=1;
             char* Numbers[11]={"11","0","1","2","3","4","5","6","7","8","9"};
             char  p[1];
@@ -79,8 +80,9 @@ int main(int argc,char* argv[],char ** envp)
                 printf("\n argv[3][index] =%d\n",argv[3][index]);
                 printf("\nParamètre non reconnu\n");
                 return EXIT_FAILURE;
-            }
-            
+            }*/
+            findall(argv[1],argv[3]);
+            return 1;
             
         }
         

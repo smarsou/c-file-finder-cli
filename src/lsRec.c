@@ -61,57 +61,167 @@ long int FileSize(char file[])
 }
 
 
-int filterSize(int tailleDuFichier,char *taillePattern){
+int filterSize(int tailleDuFichier,char *taillePattern)
+{
+	char * unit[5]={"5","c","k","K","M"};
+	char * dernier=malloc(sizeof(char));
+	dernier[0]=taillePattern[strlen(taillePattern)];
 
-    char *eptr;
-    long result;
-	char * size=malloc(sizeof(strlen(taillePattern)-2));
-    for (size_t i = 0; i < strlen(taillePattern)-2; i++)
-    {
-        size[i]=taillePattern[i+1];
-    }
-	result = strtol(size, &eptr, 10);
-	switch (taillePattern[strlen(taillePattern)])
+	if (isElement(unit,dernier))
 	{
-	case 'c':
-		break;
-	case 'k':
-		result=result*1024;
-		break;
-	case 'M':
-		result=result*1024*1024;
-		break;
-	case 'G':
-		result=result*1024*1024*1024;
-		break;
-	default:
-		result=result+(int)taillePattern[strlen(taillePattern)]-48;
-		break;
-	}
-
-	if (taillePattern[0]=='+')
-	{
-		if (tailleDuFichier >=result)
+		//dans le cas où le paramètre d'option se termine par c ou k ou K ou M 
+		if ((taillePattern[0]=='-' ||taillePattern[0]=='+'))
 		{
-			return 1;
+			//dans le cas où le paramètre de l'option commence par + ou - 
+			char *eptr;
+			long result;
+			char * size=malloc(sizeof(strlen(taillePattern)-2));
+			for (size_t i = 0; i < strlen(taillePattern)-2; i++)
+			{
+				size[i]=taillePattern[i+1];
+			}
+			result = strtol(size, &eptr, 10);
+			switch (taillePattern[strlen(taillePattern)])
+			{
+			case 'c':
+				break;
+			case 'k':
+				result=result*1024;
+				break;
+			case 'M':
+				result=result*1024*1024;
+				break;
+			case 'G':
+				result=result*1024*1024*1024;
+				break;
+			default:
+				result=result+(int)taillePattern[strlen(taillePattern)]-48;
+				break;
+			}
+			if (taillePattern[0]=='+')
+			{
+				if (tailleDuFichier >=result)
+				{
+					return 1;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			else
+			{
+				if (tailleDuFichier <=result)
+				{
+					return 1;
+				}
+				else
+				{
+					return 0;
+				}
+			}
 		}
 		else
 		{
-			return 0;
+			//dans le cas où le paramètre de l'option commence par un entier
+			char *eptr;
+			long result;
+			char * size=malloc(sizeof(strlen(taillePattern)-1));
+			for (size_t i = 0; i < strlen(taillePattern)-1; i++)
+			{
+				size[i]=taillePattern[i];
+			}
+			result = strtol(size, &eptr, 10);
+			switch (taillePattern[strlen(taillePattern)])
+			{
+			case 'c':
+				break;
+			case 'k':
+				result=result*1024;
+				break;
+			case 'M':
+				result=result*1024*1024;
+				break;
+			case 'G':
+				result=result*1024*1024*1024;
+				break;
+			default:
+				result=result+(int)taillePattern[strlen(taillePattern)]-48;
+				break;
+			}
+			if (tailleDuFichier==result)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+			
+			
 		}
+		
 	}
 	else
-	{
-		if (tailleDuFichier <=result)
+	{//dans le cas pas d'unité précise
+		if ((taillePattern[0]=='-' ||taillePattern[0]=='+'))
 		{
-			return 1;
+			//dans le cas où le paramètre de l'option commence par + ou - 
+			char *eptr;
+			long result;
+			char * size=malloc(sizeof(strlen(taillePattern)-1));
+			for (size_t i = 0; i < strlen(taillePattern)-1; i++)
+			{
+				size[i]=taillePattern[i+1];
+			}
+			result = strtol(size, &eptr, 10);
+			if (taillePattern[0]=='+')
+			{
+				if (tailleDuFichier >=result)
+				{
+					return 1;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			else
+			{
+				if (tailleDuFichier <=result)
+				{
+					return 1;
+				}
+				else
+				{
+					return 0;
+				}
+			}
 		}
 		else
 		{
-			return 0;
+			//dans le cas où le paramètre de l'option commence par un entier
+			char *eptr;
+			long result;
+			char * size=malloc(sizeof(strlen(taillePattern)));
+			for (size_t i = 0; i < strlen(taillePattern); i++)
+			{
+				size[i]=taillePattern[i];
+			}
+			result = strtol(size, &eptr, 10);
+			if (tailleDuFichier==result)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+			
+			
 		}
 	}
-
+	
 }
 
 //Fonction de filtre du fichier name en fonction de l'option et des paramètres d'option
@@ -119,15 +229,16 @@ int filter(char *option, char * paramsOption[], struct dirent *namelistEl){
 	if (!strcmp(option,"-name")){ //Si on filtre par nom (-name)
 		return filterName(namelistEl->d_name, paramsOption[0]);
 	}
-	if (!strcmp(option,"-size")){ //Si on filtre par nom (-name)
-		//printf("\nnamelistEl->d_name =%s\n",namelistEl->d_name);
-		//printf("\n size of namelistEl->d_name =%ld\n",FileSize( namelistEl->d_name));
-		return filterSize(FileSize(namelistEl->d_name),paramsOption[0]);
-	}
+	/*if (!strcmp(option,"-size")){ //Si on filtre par nom (-size)
+		/*printf("---------------------\n");
+		printf("\nnamelistEl->d_name =%s\n",namelistEl);
+		printf("\nsize of namelistEl->d_name =%ld\n",FileSize( namelistEl->d_name));*/
+		//return filterSize(FileSize(namelistEl->d_name),paramsOption[0]);
+	/*}
 	else{
 		printf("Option non prise en compte");
 		return 0;
-	}
+	}*/
 }
 
 void find(char *dir, char *option, char * paramsOption[]){
@@ -189,7 +300,7 @@ void find(char *dir, char *option, char * paramsOption[]){
 		strcat(str1,name);
 		find(str1,option, paramsOption);
 	}
-    free(namelist);    
+    free(namelist);  
 }
 
 void ls(char* dir, int tab){
@@ -266,3 +377,51 @@ void lsrec(char *dir, int tab){
 	}
     free(namelist);    
 }
+
+void findall(char* s,char * taillePattern)
+{
+    char chemin[4096];
+    struct dirent *lecture;
+    DIR *rep;
+       
+    rep = opendir(s);
+    if (rep == NULL)
+    {
+       perror(s);
+       return;
+    }
+    //printf("%s/", s);
+    while ((lecture = readdir(rep))!=NULL)
+    {
+        if (lecture->d_type == DT_DIR)
+        {
+			if (strcmp(lecture->d_name, ".")!=0 && strcmp(lecture->d_name, "..")!=0)
+			{ 
+				strcpy(chemin, s);
+				strcat(chemin,"/");
+				strcat(chemin, lecture->d_name);
+				findall(chemin,taillePattern);
+			}
+        }
+        else
+        {
+            char str1[255];
+            strcpy(str1,s);
+            strcat(str1,"/");
+            strcat(str1,lecture->d_name);
+            //printf("%s\n",str1);
+            //printf("taille de %s =%lu \n",str1,FileSize(str1));
+			if (filterSize(FileSize(str1),taillePattern))
+			{
+				printf("%s\n",str1);
+
+			}
+			
+        }
+    }
+    closedir(rep);
+}
+
+
+
+
