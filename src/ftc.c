@@ -86,6 +86,11 @@ int main(int argc,char* argv[],char ** envp)
             return 1;
             
         }
+        if (!strcmp(argv[2],"-date"))
+        {
+            findallDate(argv[1],argv[3]);
+            return 1;
+        }
         
 
 
