@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lsRec.h"
-#include "find.h"
+#include "headers/lsRec.h"
+#include "headers/find.h"
 
 
 
@@ -10,8 +10,6 @@ void test(char* xxxx,char * yyyy)
 {
     printf("La valeur du flag %s est %s\n",xxxx,yyyy);
 }
-
-
 
 int main(int argc,char* argv[],char ** envp)
 {
@@ -155,21 +153,6 @@ int main(int argc,char* argv[],char ** envp)
             }
             find(argv[1],option,paramsOption);
         }
-
-        //Execution du cas où l'option est -date
-        if (!strcmp(argv[2],"-date")){
-            if (argc < 4){
-                printf("Erreur: Spécifiez une date de dernier accès\n");
-                return EXIT_FAILURE;
-            }
-            if (argc>5)
-            {
-                printf("Erreur: Trop de paramètres\n");
-                return EXIT_FAILURE;   
-            }
-            find(argv[1],option,paramsOption);
-        }
-
     /*
     ET/OU param -option [param]
     date param  int+h/m/j

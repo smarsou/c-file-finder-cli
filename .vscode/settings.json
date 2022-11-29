@@ -5,6 +5,13 @@
         "stdlib.h": "c",
         "dirent.h": "c",
         "stdio.h": "c",
-        "lsrec.h": "c"
+        "lsrec.h": "c",
+        "regex.h": "c",
+        "filter_size.h": "c",
+        "string.h": "c",
+        "stat.h": "c",
+        "errno.h": "c",
+        "types.h": "c",
+        "filter_mime.h": "c"
     }
 }

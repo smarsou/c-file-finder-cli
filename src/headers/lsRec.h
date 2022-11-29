@@ -8,12 +8,11 @@
 #include "lsRec.h"
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <time.h>
 
 void tabulation(int tab);
 void lsrec(char *dir, int tab);
 void ls(char *dir, int tab);
 int isElement(char** list,char* element);
-double LastTimeSinceModifiedinSeconds(char file_name[]);
-void findallDate(char* s,char * taillePattern);
 
 #endif
