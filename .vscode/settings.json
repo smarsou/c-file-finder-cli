@@ -4,6 +4,7 @@
         "typeinfo": "c",
         "stdlib.h": "c",
         "dirent.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "lsrec.h": "c"
     }
 }

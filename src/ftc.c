@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "lsRec.h"
+#include "find.h"
 
 
 
@@ -94,6 +95,7 @@ int main(int argc,char* argv[],char ** envp)
         for (int i =0; i<argc-3; i++){
             paramsOption[i] = argv[i+3];
         }
+
         //Execution du cas où l'option est -name
         if (!strcmp(argv[2],"-name")){
             if (argc < 4){
@@ -128,6 +130,20 @@ int main(int argc,char* argv[],char ** envp)
         if (!strcmp(argv[2],"-size")){
             if (argc < 4){
                 printf("Erreur: Spécifiez une taille de fichier\n");
+                return EXIT_FAILURE;
+            }
+            if (argc>5)
+            {
+                printf("Erreur: Trop de paramètres\n");
+                return EXIT_FAILURE;   
+            }
+            find(argv[1],option,paramsOption);
+        }
+
+        //Execution du cas où l'option est -date
+        if (!strcmp(argv[2],"-date")){
+            if (argc < 4){
+                printf("Erreur: Spécifiez une date de dernier accès\n");
                 return EXIT_FAILURE;
             }
             if (argc>5)
