@@ -6,10 +6,17 @@
 #include "find.h"
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <regex.h>
 
+int evaluateRegex(char *name, char *pattern){
+    int value;
+    regex_t reegex;
+    regcomp( &reegex, pattern, 0);
+    return regexec( &reegex, name,0, NULL, 0);
+}
 
 int filterName(char *name, char *pattern){
-	if (!strcmp(name, pattern)){ //Si le nom est le même que celui passé en paramètre d'option
+	if (!evaluateRegex(name, pattern)){ //Si le nom est le même que celui passé en paramètre d'option
 			return 1;
 		}else{
 			return 0;
@@ -205,35 +212,10 @@ void find(char *dir, char *option, char * paramsOption[]){
     struct dirent *d;
     struct dirent **namelist; // namelist[i] est un pointeur, namelist[i]->d_type est un entier, il permet de savoir si le pointeur nameliste[i] correspond à un répertoire ou un fichier (4 == repertoire, 8 == fichier)
 	
-	
-	// Test erreur de lecture du repertoire courant
-		DIR *dh = opendir(dir);
-		
-		if (!dh)
-		{
-			if (errno == ENOMEM){
-				perror("Memory error");
-				printf("%s %d\n ", dir, errno);
-			}
-			if (errno == ENOENT)
-			{
-				//If the directory is not found
-				perror("Directory doesn't exist or was just removed by another process");
-				printf("%s %d\n ", dir, errno);
-			}
-			else
-			{
-				//If the directory is not readable then throw error and exit
-				perror("Unable to read directory");
-			}
-			exit(EXIT_FAILURE); //ligne de code à passer en commentaire pour ignorer les répertoires innaccessibles 
-		}
-	
-
 	// SCAN du répertoire, n = le nombre de fichier et répertoire, n=-1 si erreur lors du scandir
 	int n = scandir(dir, &namelist, 0, alphasort);
 	if (n==-1){  // Si y'a une erreur quelconque on skip cette apel récursif
-		printf("\nERROR skip this folder\n");
+		perror("\nERROR skip this folder\n");
 		return;
 		}
 	
@@ -256,7 +238,11 @@ void find(char *dir, char *option, char * paramsOption[]){
 										//Si on lis un dossier
 		char str1[255];
 		strcpy(str1, dir);
-		strcat(str1, "/");
+        // Permet de supprimer les doublons de '/'
+            size_t taille = strlen(str1);
+            if (!(str1[taille-1]=='/')){
+                strcat(str1, "/");
+            }
 		strcat(str1,name);
 		find(str1,option, paramsOption);
 	}
