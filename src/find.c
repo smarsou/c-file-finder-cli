@@ -5,14 +5,12 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "MegaMimes.h"
 #include "headers/find.h"
 #include "headers/filter.h"
 #include "headers/filter_size.h"
 
 
 void find(char *dir, char *option, char * paramsOption[]){
-    struct dirent *d;
     struct dirent **namelist; // namelist[i] est un pointeur, namelist[i]->d_type est un entier, il permet de savoir si le pointeur nameliste[i] correspond à un répertoire ou un fichier (4 == repertoire, 8 == fichier)
 	
 	// SCAN du répertoire, n = le nombre de fichier et répertoire, n=-1 si erreur lors du scandir

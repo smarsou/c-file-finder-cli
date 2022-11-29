@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "MegaMimes.h"
+#include "../libs/MegaMimes/src/MegaMimes.h"
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>

@@ -7,7 +7,6 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "MegaMimes.h"
 #include "filter.h"
 #include "filter_size.h"
 #include "filter_date.h"

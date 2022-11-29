@@ -1,7 +1,6 @@
 #ifndef FILTER
 #define FILTER
 #include <stdio.h>
-#include "MegaMimes.h"
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>

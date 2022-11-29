@@ -7,7 +7,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "MegaMimes.h"
+#include "../../libs/MegaMimes/src/MegaMimes.h"
 
 int filterMime(const char *path, char *mime);
 

@@ -48,7 +48,6 @@ void ls(char* dir, int tab){
 }
 
 void lsrec(char *dir, int tab){
-    struct dirent *d;
     struct dirent **namelist; // namelist[i] est un pointeur, namelist[i]->d_type est un entier, il permet de savoir si le pointeur nameliste[i] correspond à un répertoire ou un fichier (4 == repertoire, 8 == fichier)
 	
 	
