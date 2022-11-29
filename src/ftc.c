@@ -123,13 +123,11 @@ int main(int argc,char* argv[],char ** envp)
                 printf("Le flag %s n'est pas correct",argv[3]);
             }
             
-            
-
         }
-        //Execution du cas où l'option est -size
-        if (!strcmp(argv[2],"-size")){
+
+        if (!strcmp(argv[2],"-dir")){
             if (argc < 4){
-                printf("Erreur: Spécifiez une taille de fichier\n");
+                printf("Erreur: Spécifiez un nom de répertoire\n");
                 return EXIT_FAILURE;
             }
             if (argc>5)

@@ -193,9 +193,13 @@ int filterSize(long double tailleDuFichier,char *taillePattern)
 
 //Fonction de filtre du fichier name en fonction de l'option et des paramètres d'option
 int filter(char *option, char * paramsOption[], struct dirent *namelistEl){
-	if (!strcmp(option,"-name")){ //Si on filtre par nom (-name)
+	if (!strcmp(option,"-name") && namelistEl->d_type==8){ //Si on filtre par nom (-name)
 		return filterName(namelistEl->d_name, paramsOption[0]);
 	}
+    if (!strcmp(option,"-dir") && namelistEl->d_type==4){ //Si on filtre par nom (-dir)
+		return filterName(namelistEl->d_name, paramsOption[0]);
+	}
+    return 0;
 	/*if (!strcmp(option,"-size")){ //Si on filtre par nom (-size)
 		/*printf("---------------------\n");
 		printf("\nnamelistEl->d_name =%s\n",namelistEl);
@@ -229,22 +233,27 @@ void find(char *dir, char *option, char * paramsOption[]){
 
 		//Permet d'indenter l'affichage
 		char * name = namelist[i]->d_name;
-		if (namelist[i]->d_type!=4){	// Si on lis un fichier
+        // Si on lis un fichier
+		if (namelist[i]->d_type!=4){	
 			if (filter(option, paramsOption, namelist[i])){	//Si le fichier correspond à la demande de l'utilisateur (flag et paramètres).
 				printf("%s/%s\n", dir,name);	//Alors afficher le chemin
 			}
-			continue;
+		}
+        //Si on lis un dossier
+        else{                          
+			if (filter(option, paramsOption, namelist[i])){	//Si le dossier correspond à la demande de l'utilisateur (flag et paramètres).
+				printf("%s/%s\n", dir,name);	//Alors afficher le chemin
 			}
-										//Si on lis un dossier
-		char str1[255];
-		strcpy(str1, dir);
-        // Permet de supprimer les doublons de '/'
-            size_t taille = strlen(str1);
-            if (!(str1[taille-1]=='/')){
-                strcat(str1, "/");
-            }
-		strcat(str1,name);
-		find(str1,option, paramsOption);
+            char str1[255];
+            strcpy(str1, dir);
+            // Permet de supprimer les doublons de '/'
+                size_t taille = strlen(str1);
+                if (!(str1[taille-1]=='/')){
+                    strcat(str1, "/");
+                }
+            strcat(str1,name);
+            find(str1,option, paramsOption);
+        }
 	}
     free(namelist);  
 }
@@ -292,4 +301,3 @@ void findall(char* s,char * taillePattern)
     }
     closedir(rep);
 }
-
