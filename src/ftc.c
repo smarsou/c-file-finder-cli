@@ -138,6 +138,19 @@ int main(int argc,char* argv[],char ** envp)
             find(argv[1],option,paramsOption);
         }
 
+        if (!strcmp(argv[2],"-mime")){
+            if (argc < 4){
+                printf("Erreur: Spécifiez un type mime\n");
+                return EXIT_FAILURE;
+            }
+            if (argc>5)
+            {
+                printf("Erreur: Trop de paramètres\n");
+                return EXIT_FAILURE;   
+            }
+            find(argv[1],option,paramsOption);
+        }
+
         //Execution du cas où l'option est -date
         if (!strcmp(argv[2],"-date")){
             if (argc < 4){

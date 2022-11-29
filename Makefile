@@ -1,5 +1,8 @@
+MEGAMIMEShPATH = ./lib/MegaMimes/src/MegaMimes.h
+MEGAMIMEScPATH = ./lib/MegaMimes/src/MegaMimes.c
+
 make : 
-	gcc ./src/ftc.c ./src/lsRec.h ./src/lsRec.c ./src/find.h ./src/find.c -o ftc
+	gcc $(MEGAMIMEShPATH) $(MEGAMIMEScPATH) ./src/ftc.c ./src/lsRec.h ./src/lsRec.c ./src/find.h ./src/find.c -o ftc
 	chmod +x ftc
 	
 clean : 
