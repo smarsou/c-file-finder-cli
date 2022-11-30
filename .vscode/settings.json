@@ -12,6 +12,7 @@
         "stat.h": "c",
         "errno.h": "c",
         "types.h": "c",
-        "filter_mime.h": "c"
+        "filter_mime.h": "c",
+        "filter_name.h": "c"
     }
 }

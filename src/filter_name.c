@@ -16,9 +16,5 @@ int evaluateRegex(char *name, char *pattern){
 }
 
 int filterName(char *name, char *pattern){
-	if (!evaluateRegex(name, pattern)){ //Si le nom est le même que celui passé en paramètre d'option
-			return 1;
-		}else{
-			return 0;
-		}
+	return !evaluateRegex(name, pattern); //Si le nom est le même que celui passé en paramètre d'option
 }

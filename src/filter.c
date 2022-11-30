@@ -9,6 +9,7 @@
 #include "headers/filter.h"
 #include "headers/filter_mime.h"
 #include "headers/filter_name.h"
+#include "headers/filter_ctc.h"
 
 //Fonction de filtre du fichier name en fonction de l'option et des paramètres d'option
 int filter(char *option, char * paramsOption[], struct dirent *namelistEl, char *dir){
@@ -18,7 +19,7 @@ int filter(char *option, char * paramsOption[], struct dirent *namelistEl, char 
     if (!strcmp(option,"-dir") && namelistEl->d_type==4){ //Si on filtre par nom (-dir)
 		return filterName(namelistEl->d_name, paramsOption[0]);
 	}
-    if (!strcmp(option,"-mime") && namelistEl->d_type==8){ //Si on filtre par nom (-dir)
+    if (!strcmp(option,"-mime") && namelistEl->d_type==8){ //Si on filtre par nom (-mime)
         char str1[255];
             strcpy(str1, dir);
             // Permet de supprimer les doublons de '/'
@@ -28,6 +29,17 @@ int filter(char *option, char * paramsOption[], struct dirent *namelistEl, char 
                 }
             strcat(str1,namelistEl->d_name);
 		return filterMime(str1, paramsOption[0]);
+	}
+	if (!strcmp(option,"-ctc") && namelistEl->d_type==8){ //Si on filtre par nom (-ctc)
+			char str1[255];
+            strcpy(str1, dir);
+            // Permet de supprimer les doublons de '/'
+                size_t taille = strlen(str1);
+                if (!(str1[taille-1]=='/')){
+                    strcat(str1, "/");
+                }
+            strcat(str1,namelistEl->d_name);
+		return filterCtc(str1, paramsOption[0]);
 	}
     return 0;
 	/*if (!strcmp(option,"-size")){ //Si on filtre par nom (-size)

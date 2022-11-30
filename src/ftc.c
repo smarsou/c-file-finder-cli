@@ -39,7 +39,7 @@ int main(int argc,char* argv[],char ** envp)
             return EXIT_FAILURE;
         }
 
-        char *OptionsSansParametre[5]={"5","-ctc","-color","-links","-threads"};
+        char *OptionsSansParametre[4]={"5","-color","-links","-threads"};
         if (isElement(OptionsSansParametre,argv[2]) )
         {
             if (argv[3]!=NULL)
@@ -144,6 +144,18 @@ int main(int argc,char* argv[],char ** envp)
         if (!strcmp(argv[2],"-mime")){
             if (argc < 4){
                 printf("Erreur: Spécifiez un type mime\n");
+                return EXIT_FAILURE;
+            }
+            if (argc>5)
+            {
+                printf("Erreur: Trop de paramètres\n");
+                return EXIT_FAILURE;   
+            }
+            find(argv[1],option,paramsOption);
+        }
+        if (!strcmp(argv[2],"-ctc")){
+            if (argc < 4){
+                printf("Erreur: Spécifiez une chaine de caractère\n");
                 return EXIT_FAILURE;
             }
             if (argc>5)
