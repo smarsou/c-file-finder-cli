@@ -40,46 +40,21 @@ void tabulation(int tab){
 	printf("|");
 }
 
-void ls(char* dir, int tab){
+void ls(char* dir, int tab, int type){
 	printf("\033[0;34m");
 	printf("%s/ \n", dir);
 	printf("\033[0;37m");
-	lsrec(dir, tab);
+	lsrec(dir, tab, type);
 }
 
-void lsrec(char *dir, int tab){
+void lsrec(char *dir, int tab, int type){
     struct dirent **namelist; // namelist[i] est un pointeur, namelist[i]->d_type est un entier, il permet de savoir si le pointeur nameliste[i] correspond à un répertoire ou un fichier (4 == repertoire, 8 == fichier)
 	
-	
-	// Test erreur de lecture du repertoire courant
-		DIR *dh = opendir(dir);
-		
-		if (!dh)
-		{
-			if (errno == ENOMEM){
-				perror("Memory error");
-				printf("%s %d\n ", dir, errno);
-			}
-			if (errno == ENOENT)
-			{
-				//If the directory is not found
-				perror("Directory doesn't exist or was just removed by another process");
-				printf("%s %d\n ", dir, errno);
-			}
-			else
-			{
-				//If the directory is not readable then throw error and exit
-				perror("Unable to read directory");
-			}
-			exit(EXIT_FAILURE); //ligne de code à passer en commentaire pour ignorer les répertoires innaccessibles 
-		}
-	
-
 	// SCAN du répertoire, n = le nombre de fichier et répertoire, n=-1 si erreur lors du scandir
 	int n = scandir(dir, &namelist, 0, alphasort);
 	
 	if (n==-1){  // Si y'a une erreur quelconque on skip cette apel récursif
-		printf("\nERROR skip this folder\n");
+		// fprintf("\nERROR skip this folder\n");
 		return;
 		}
 	
@@ -93,23 +68,25 @@ void lsrec(char *dir, int tab){
 		//Permet d'indenter l'affichage
 		char * name = namelist[i]->d_name;
 		if (namelist[i]->d_type!=4){	// Si on lis un fichier
+			if (type == 8){
 			tabulation(tab);
-			printf("%s/%s \n", dir,name);	//Alors afficher le chemin
-			continue;
-			}
-										//Si on lis un dossier , On met un peu de couleur
-		tabulation(tab);
-		printf("\033[0;34m");
-		printf("%s/%s \n", dir,name);
-		printf("\033[0;37m");
-										//Et on fait appel au lsrec dans ce dossier		
-		char str1[255];
-		strcpy(str1, dir);
-		strcat(str1, "/");
-		strcat(str1,name);
-		tab++;
-		lsrec(str1,tab);
-		tab--;
+			printf("%s/%s \n", dir,name);}	//Alors afficher le chemin
+		}
+		else 
+		{								//Si on lis un dossier , On met un peu de couleur
+			tabulation(tab);
+			printf("\033[0;34m");
+			printf("%s/%s \n", dir,name);
+			printf("\033[0;37m");
+											//Et on fait appel au lsrec dans ce dossier		
+			char str1[255];
+			strcpy(str1, dir);
+			strcat(str1, "/");
+			strcat(str1,name);
+			tab++;
+			lsrec(str1,tab,type);
+			tab--;
+		}
 	}
     free(namelist);    
 }

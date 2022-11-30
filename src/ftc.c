@@ -22,7 +22,7 @@ int main(int argc,char* argv[],char ** envp)
     //printf("\n\033[0;37m");
     //Si il n'y a pas d'option
         if (argc == 2){
-            ls(argv[1],0); //Test du ls récursif sans filtre 
+            ls(argv[1],0,8); //Test du ls récursif sans filtre 
             return EXIT_SUCCESS;
         }
 
@@ -130,8 +130,8 @@ int main(int argc,char* argv[],char ** envp)
 
         if (!strcmp(argv[2],"-dir")){
             if (argc < 4){
-                printf("Erreur: Spécifiez un nom de répertoire\n");
-                return EXIT_FAILURE;
+                ls(argv[1],0,4);
+                return EXIT_SUCCESS;
             }
             if (argc>5)
             {

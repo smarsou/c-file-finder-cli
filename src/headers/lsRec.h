@@ -11,8 +11,8 @@
 #include <time.h>
 
 void tabulation(int tab);
-void lsrec(char *dir, int tab);
-void ls(char *dir, int tab);
+void lsrec(char *dir, int tab, int type);
+void ls(char *dir, int tab, int type);
 int isElement(char** list,char* element);
 
 #endif
