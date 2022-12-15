@@ -135,7 +135,6 @@ void fileLastModified(char file_name[])
 double LastTimeSinceModifiedinSeconds(char file_name[])
 {
 	//get local time
-	char buf[255] = {0};
     
     time_t rawtime = time(NULL);
     
@@ -148,9 +147,8 @@ double LastTimeSinceModifiedinSeconds(char file_name[])
     
     time_t loc=mktime(ptm);
 
-    char t[100] = "";
     struct stat b;
-    struct tm * modifie=localtime( &b.st_mtime);
+    //struct tm * modifie=localtime( &b.st_mtime);
     if (!stat(file_name, &b)) 
 	{
         time_t modified=mktime(localtime( &b.st_mtime));

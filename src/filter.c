@@ -43,11 +43,11 @@ int filter(char *option, char * paramsOption[], struct dirent *namelistEl, char 
 	}
     return 0;
 	/*if (!strcmp(option,"-size")){ //Si on filtre par nom (-size)
-		/*printf("---------------------\n");
+		printf("---------------------\n");
 		printf("\nnamelistEl->d_name =%s\n",namelistEl);
-		printf("\nsize of namelistEl->d_name =%ld\n",FileSize( namelistEl->d_name));*/
+		printf("\nsize of namelistEl->d_name =%ld\n",FileSize( namelistEl->d_name));
 		//return filterSize(FileSize(namelistEl->d_name),paramsOption[0]);
-	/*}
+	}
 	else{
 		printf("Option non prise en compte");
 		return 0;

@@ -75,7 +75,6 @@ void findall(char* s,char * taillePattern)
        perror(s);
        return;
     }
-    //printf("%s/", s);
     while ((lecture = readdir(rep))!=NULL)
     {
         if (lecture->d_type == DT_DIR)
@@ -94,8 +93,7 @@ void findall(char* s,char * taillePattern)
             strcpy(str1,s);
             strcat(str1,"/");
             strcat(str1,lecture->d_name);
-            //printf("%s\n",str1);
-            //printf("taille de %s =%lu \n",str1,FileSize(str1));
+            
 			if (filterSize(FileSize(str1),taillePattern))
 			{
 				printf("%s\n",str1);
@@ -124,7 +122,7 @@ void findallDate(char* s,char * taillePattern)
     {
         if (lecture->d_type == DT_DIR)
         {
-			if (strcmp(lecture->d_name, ".")!=0 && strcmp(lecture->d_name, "..")!=0)
+			if (strcmp(lecture->d_name, ".")!=0 && strcmp(lecture->d_name, "..")!=0 && lecture->d_name[0]!='.')
 			{ 
 				strcpy(chemin, s);
 				strcat(chemin,"/");
@@ -140,11 +138,90 @@ void findallDate(char* s,char * taillePattern)
             strcat(str1,lecture->d_name);
             //printf("%s\n",str1);
             //printf("taille de %s =%lu \n",str1,FileSize(str1));
-			if (filterDate(taillePattern,LastTimeSinceModifiedinSeconds(str1)))
+            //printf("\nlecture->d_name=%s \n",lecture->d_name);
+			if (filterDate(taillePattern,LastTimeSinceModifiedinSeconds(str1)) && lecture->d_name[0]!='.')
 			{
 				printf("%s\n",str1);
 			}
 			
+        }
+    }
+    closedir(rep);
+}
+
+void findET(char *s,char * Patterns[2][20],int nb)
+{
+    //printf("Entered findet\n");
+    char chemin[4096];
+    struct dirent *lecture;
+    DIR *rep;
+    rep = opendir(s);
+    if (rep == NULL)
+    {
+        printf("s= %s\n",s);
+        printf("rep == null\n");
+        perror(s);
+        return;
+    }
+    while ((lecture = readdir(rep))!=NULL)
+    {
+        if (lecture->d_type == DT_DIR)
+        {
+			if (strcmp(lecture->d_name, ".")!=0 && strcmp(lecture->d_name, "..")!=0 && lecture->d_name[0]!='.')
+			{ 
+				strcpy(chemin, s);
+				strcat(chemin,"/");
+				strcat(chemin, lecture->d_name);
+                //printf("recursive call\n");
+				findET(chemin,Patterns,nb);
+			}
+        }
+        else
+        {
+            char str1[255];
+            strcpy(str1,s);
+            strcat(str1,"/");
+            strcat(str1,lecture->d_name);
+            int test=1;
+            
+            
+            //printf("Begining filtre\n");
+            for (int i=0;i<nb;i++)
+            {
+                //printf("inside for i=%d\n",i);
+                if (!strcmp(Patterns[0][i],"-date"))
+                {
+                    test=test && filterDate(Patterns[1][i],LastTimeSinceModifiedinSeconds(str1));
+                }
+                if (!strcmp(Patterns[0][i],"-size"))
+                {
+                    test=test &&filterSize(FileSize(str1),Patterns[1][i]);
+                }
+                
+                if (!strcmp(Patterns[0][i],"-name"))
+                {
+                    test=test &&filterName(str1,Patterns[1][i]);
+                }
+
+                if (!strcmp(Patterns[0][i],"-dir"))
+                {
+                    test=test &&filterName(str1,Patterns[1][i]);
+                }
+
+                if (!strcmp(Patterns[0][i],"-mime"))
+                {
+                    test=test &&filterMime(str1,Patterns[1][i]);
+                }
+                if (!strcmp(Patterns[0][i],"-ctc"))
+                {
+                    test=test &&filterName(str1,Patterns[1][i]);
+                }
+            }
+            //printf("test= %d\n",test);
+            if (test)
+            {
+                printf("%s\n",str1);
+            }
         }
     }
     closedir(rep);

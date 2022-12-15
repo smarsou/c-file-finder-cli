@@ -9,7 +9,7 @@
 #include "headers/filter_name.h"
 
 int evaluateRegex(char *name, char *pattern){
-    int value;
+    //int value;
     regex_t reegex;
     regcomp( &reegex, pattern, 0);
     return regexec( &reegex, name,0, NULL, 0);

@@ -11,8 +11,99 @@ void test(char* xxxx,char * yyyy)
     printf("La valeur du flag %s est %s\n",xxxx,yyyy);
 }
 
-int main(int argc,char* argv[],char ** envp)
+int option(int argc,char* argv[])
 {
+    //char* Options[13]={"13","-test","-name","-date","-size","-mime","-ctc","-dir","-color","-perm","-links","-threads","-ou"};
+
+    //vérifier le bon paramétrage de -size
+    if (!strcmp(argv[2],"-size"))
+    {
+        if (argv[3][0]!='+' && argv[3][0]!='-' && argv[3][0]!='1' && argv[3][0]!='2' && argv[3][0]!='3' && argv[3][0]!='4' && argv[3][0]!='5' && argv[3][0]!='6' && argv[3][0]!='7' && argv[3][0]!='8' && argv[3][0]!='9')
+        {
+            
+            printf("paramétre de -size non reconnu\n");
+            return 0;
+        }
+        
+        findall(argv[1],argv[3]);
+        return 0;
+        
+    }
+    if (!strcmp(argv[2],"-date"))
+    {
+        findallDate(argv[1],argv[3]);
+        return 1;
+    }
+    
+
+
+    //Définir les variables interéssantes pour filter le lsrec
+    char * option = argv[2];
+    char * paramsOption[argc-3];
+    for (int i =0; i<argc-3; i++){
+        paramsOption[i] = argv[i+3];
+    }
+
+    //Execution du cas où l'option est -name
+    if (!strcmp(argv[2],"-name")){
+        if (argc < 4){
+            printf("Erreur: Spécifiez un nom de fichier\n");
+            return EXIT_FAILURE;
+        }
+        if (argc>5)
+        {
+            printf("Erreur: Trop de paramètres\n");
+            return EXIT_FAILURE;   
+        }
+        find(argv[1],option,paramsOption);
+    }
+
+
+    
+
+    if (!strcmp(argv[2],"-dir")){
+        if (argc < 4){
+            ls(argv[1],0,4);
+            return EXIT_SUCCESS;
+        }
+        if (argc>5)
+        {
+            printf("Erreur: Trop de paramètres\n");
+            return EXIT_FAILURE;   
+        }
+        find(argv[1],option,paramsOption);
+    }
+
+    if (!strcmp(argv[2],"-mime")){
+        if (argc < 4){
+            printf("Erreur: Spécifiez un type mime\n");
+            return EXIT_FAILURE;
+        }
+        if (argc>5)
+        {
+            printf("Erreur: Trop de paramètres\n");
+            return EXIT_FAILURE;   
+        }
+        find(argv[1],option,paramsOption);
+    }
+    if (!strcmp(argv[2],"-ctc")){
+        if (argc < 4){
+            printf("Erreur: Spécifiez une chaine de caractère\n");
+            return EXIT_FAILURE;
+        }
+        if (argc>5)
+        {
+            printf("Erreur: Trop de paramètres\n");
+            return EXIT_FAILURE;   
+        }
+        find(argv[1],option,paramsOption);
+    }
+    return 1;
+}
+
+int main(int argc,char* argv[])
+{
+
     //printf infos 
     //printf("\033[0;33m");
     /*printf("\nCommand-line arguments:\n");
@@ -27,152 +118,159 @@ int main(int argc,char* argv[],char ** envp)
         }
 
     //Si il y a une option
-        //vérifier que c'est bien une option existante
-        char* Options[13]={"13","-test","-name","-date","-size","-mime","-ctc","-dir","-color","-perm","-links","-threads","-ou"};
-        if (isElement(Options,argv[2]))
+    //vérifier que c'est bien une option existante
+    char* Options[13]={"13","-test","-name","-date","-size","-mime","-ctc","-dir","-color","-perm","-links","-threads","-ou"};
+    if (isElement(Options,argv[2]))
+    {
+        //printf("\n------------------------------Option reconnue-------------------\n");
+    }
+    else
+    {
+        printf("\nOption non reconnue\n");
+        return EXIT_FAILURE;
+    }
+
+    char *OptionsSansParametre[4]={"5","-color","-links","-threads"};
+    if (isElement(OptionsSansParametre,argv[2]) )
+    {
+        if (argv[3]!=NULL)
         {
-            //printf("\n------------------------------Option reconnue-------------------\n");
-        }
-        else
-        {
-            printf("\nOption non reconnue\n");
+            printf("\nOption ne prend pas de paramètre\n");
             return EXIT_FAILURE;
         }
 
-        char *OptionsSansParametre[4]={"5","-color","-links","-threads"};
-        if (isElement(OptionsSansParametre,argv[2]) )
+    }
+    if (argc>4)
+    {
+        int nbET=0;
+        char * Patterns[2][20]={{"","","","","","","","","","","","","","","","","","","",""},{"","","","","","","","","","","","","","","","","","","",""}};
+        //patterns tableau 2D qui contient les parametres et leurs options correspondants
+        Patterns[0][0]=argv[2];
+        Patterns[1][0]=argv[3];
+        int k=1;
+        for (int i=0;i<argc;i++)
         {
-            if (argv[3]!=NULL)
+            if (!strcmp(argv[i],"ET"))
             {
-                printf("\nOption ne prend pas de paramètre\n");
-                return EXIT_FAILURE;
+                nbET++;
             }
-
         }
-        //vérifier le bon paramétrage de -size
-        if (!strcmp(argv[2],"-size"))
+        for (int i = 1; i < argc-2; i++)
         {
-            /*
-            int index=1;
-            char* Numbers[11]={"11","0","1","2","3","4","5","6","7","8","9"};
-            char  p[1];
-            p[0]=argv[3][index];
-            while (isElement(Numbers,p))
+            if (!strcmp(argv[i],"ET"))
             {
-                p[0]=argv[3][index];
-                //printf("\n argv[3][%d] =%c\n",index,argv[3][index]);
-                index++;
+                Patterns[0][k]=argv[i+1];
+                //Pattern[0] contient les noms des parametres 
+                if (!strcmp(argv[i+2],"ET"))
+                {
+                    Patterns[1][k]="no";
+                }
+                else
+                {
+                    //Pattrens contient les options des parametres correspondant si un parametre  est sans option on ajoute on
+                    Patterns[1][k]=argv[i+2];
+                }
+                k++;
             }
-            //printf("\nstrlen(argv[3])=%ld ,index =%d \n",strlen(argv[3]),index);
-            char* Taille[5]={"5","c","k","K","M"};
-            if (isElement(Taille,p))
-            {
-                //printf("\n------------------------------Paramètre de l'option -size reconnu-------------------\n");
-            }
-            else if (strlen(argv[3])==index-1)
-            {
-                //printf("\n------------------------------Paramètre de l'option -size reconnu- null------------------\n");
-            }
-            
-            else
-            {
-                printf("\n argv[3][index] =%d\n",argv[3][index]);
-                printf("\nParamètre non reconnu\n");
-                return EXIT_FAILURE;
-            }*/
-            findall(argv[1],argv[3]);
-            return 1;
-            
         }
-        if (!strcmp(argv[2],"-date"))
+        findET(argv[1],Patterns,nbET+1);
+        return EXIT_SUCCESS;
+        
+    }
+    //Execution du cas où l'option est -test
+    if (!strcmp(argv[2],"-test"))
+    {
+        if (isElement(Options,argv[3]))
         {
-            findallDate(argv[1],argv[3]);
-            return 1;
+            test(argv[3],argv[4]);
+        }
+        else
+        {
+            printf("Le flag %s n'est pas correct",argv[3]);
         }
         
-
-
-        //Définir les variables interéssantes pour filter le lsrec
-        char * option = argv[2];
-        char * paramsOption[argc-3];
-        for (int i =0; i<argc-3; i++){
-            paramsOption[i] = argv[i+3];
-        }
-
-        //Execution du cas où l'option est -name
-        if (!strcmp(argv[2],"-name")){
-            if (argc < 4){
-                printf("Erreur: Spécifiez un nom de fichier\n");
-                return EXIT_FAILURE;
-            }
-            if (argc>5)
-            {
-                printf("Erreur: Trop de paramètres\n");
-                return EXIT_FAILURE;   
-            }
-            find(argv[1],option,paramsOption);
-        }
-
+    }
     
-        //Execution du cas où l'option est -test
-        if (!strcmp(argv[2],"-test"))
+
+
+    if (!strcmp(argv[2],"-size"))
+    {
+        if (argv[3][0]!='+' && argv[3][0]!='-' && argv[3][0]!='1' && argv[3][0]!='2' && argv[3][0]!='3' && argv[3][0]!='4' && argv[3][0]!='5' && argv[3][0]!='6' && argv[3][0]!='7' && argv[3][0]!='8' && argv[3][0]!='9')
         {
-            if (isElement(Options,argv[3]))
-            {
-                test(argv[3],argv[4]);
-            }
-            else
-            {
-                printf("Le flag %s n'est pas correct",argv[3]);
-            }
             
+            printf("paramétre de -size non reconnu\n");
+            return 0;
         }
+        
+        findall(argv[1],argv[3]);
+        return 0;
+        
+    }
+    if (!strcmp(argv[2],"-date"))
+    {
+        findallDate(argv[1],argv[3]);
+        return 1;
+    }
+    
 
-        if (!strcmp(argv[2],"-dir")){
-            if (argc < 4){
-                ls(argv[1],0,4);
-                return EXIT_SUCCESS;
-            }
-            if (argc>5)
-            {
-                printf("Erreur: Trop de paramètres\n");
-                return EXIT_FAILURE;   
-            }
-            find(argv[1],option,paramsOption);
-        }
+    //Définir les variables interéssantes pour filter le lsrec
+    char * option = argv[2];
+    char * paramsOption[argc-3];
+    for (int i =0; i<argc-3; i++){
+        paramsOption[i] = argv[i+3];
+    }
 
-        if (!strcmp(argv[2],"-mime")){
-            if (argc < 4){
-                printf("Erreur: Spécifiez un type mime\n");
-                return EXIT_FAILURE;
-            }
-            if (argc>5)
-            {
-                printf("Erreur: Trop de paramètres\n");
-                return EXIT_FAILURE;   
-            }
-            find(argv[1],option,paramsOption);
+    //Execution du cas où l'option est -name
+    if (!strcmp(argv[2],"-name")){
+        if (argc < 4){
+            printf("Erreur: Spécifiez un nom de fichier\n");
+            return EXIT_FAILURE;
         }
-        if (!strcmp(argv[2],"-ctc")){
-            if (argc < 4){
-                printf("Erreur: Spécifiez une chaine de caractère\n");
-                return EXIT_FAILURE;
-            }
-            if (argc>5)
-            {
-                printf("Erreur: Trop de paramètres\n");
-                return EXIT_FAILURE;   
-            }
-            find(argv[1],option,paramsOption);
+        if (argc>5)
+        {
+            printf("Erreur: Trop de paramètres\n");
+            return EXIT_FAILURE;   
         }
-    /*
-    ET/OU param -option [param]
-    date param  int+h/m/j
-    size param  +/- int+ c/k/M/G
-    mime param  types de fichiers text/html  text
-    dir param   -option [param]/NULL
-    perm param int (permission)
-    */
+        find(argv[1],option,paramsOption);
+    }
 
+    if (!strcmp(argv[2],"-dir")){
+        if (argc < 4){
+            ls(argv[1],0,4);
+            return EXIT_SUCCESS;
+        }
+        if (argc>5)
+        {
+            printf("Erreur: Trop de paramètres\n");
+            return EXIT_FAILURE;   
+        }
+        find(argv[1],option,paramsOption);
+    }
+
+    if (!strcmp(argv[2],"-mime")){
+        if (argc < 4){
+            printf("Erreur: Spécifiez un type mime\n");
+            return EXIT_FAILURE;
+        }
+        if (argc>5)
+        {
+            printf("Erreur: Trop de paramètres\n");
+            return EXIT_FAILURE;   
+        }
+        find(argv[1],option,paramsOption);
+    }
+    if (!strcmp(argv[2],"-ctc")){
+        if (argc < 4){
+            printf("Erreur: Spécifiez une chaine de caractère\n");
+            return EXIT_FAILURE;
+        }
+        if (argc>5)
+        {
+            printf("Erreur: Trop de paramètres\n");
+            return EXIT_FAILURE;   
+        }
+        find(argv[1],option,paramsOption);
+    }
+    return 1;
     return EXIT_SUCCESS;
 }
