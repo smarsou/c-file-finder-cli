@@ -59,7 +59,7 @@ int filterDate(char * datePattern,double dateLastModif)
 			}
 		}
 	}
-	else
+	else if (datePattern[0]=='1' || datePattern[0]=='2'|| datePattern[0]=='3' || datePattern[0]=='4' || datePattern[0]=='5' || datePattern[0]=='6' || datePattern[0]=='7' || datePattern[0]=='9' || datePattern[0]=='8')
 	{
 		char *eptr;
 		long double result;
@@ -105,6 +105,22 @@ int filterDate(char * datePattern,double dateLastModif)
 				return 0;
 			}
 		}
+	}
+	else if (!strcmp(datePattern,"now"))
+	{
+		return filterDate("-5m",dateLastModif);
+	}
+	else if (!strcmp(datePattern,"today"))
+	{
+		return filterDate("-24h",dateLastModif);
+	}
+	else if (!strcmp(datePattern,"yesterday"))
+	{
+		return filterDate("-48h",dateLastModif);
+	}
+	else if (!strcmp(datePattern,"this month"))
+	{
+		return filterDate("-720h",dateLastModif);
 	}
 }
 

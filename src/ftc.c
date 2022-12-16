@@ -13,14 +13,6 @@ void test(char* xxxx,char * yyyy)
 
 int main(int argc,char* argv[])
 {
-
-    //printf infos 
-    //printf("\033[0;33m");
-    /*printf("\nCommand-line arguments:\n");
-    for( int count = 0; count < argc; count++ )
-        printf("  argv[%d]   %s\n", count, argv[count]);*/
-    //printf("  argc   %d\n", argc);
-    //printf("\n\033[0;37m");
     //Si il n'y a pas d'option
         if (argc == 2){
             ls(argv[1],0,8); //Test du ls récursif sans filtre 
@@ -139,9 +131,11 @@ int main(int argc,char* argv[])
 
     if (!strcmp(argv[2],"-size"))
     {
-        if (argv[3][0]!='+' && argv[3][0]!='-' && argv[3][0]!='1' && argv[3][0]!='2' && argv[3][0]!='3' && argv[3][0]!='4' && argv[3][0]!='5' && argv[3][0]!='6' && argv[3][0]!='7' && argv[3][0]!='8' && argv[3][0]!='9')
+        int a=argv[3][strlen(argv[3])-1]!='1' && argv[3][strlen(argv[3])-1]!='2' && argv[3][strlen(argv[3])-1]!='3' && argv[3][strlen(argv[3])-1]!='4' && argv[3][strlen(argv[3])-1]!='5' && argv[3][strlen(argv[3])-1]!='6' && argv[3][strlen(argv[3])-1]!='7' && argv[3][strlen(argv[3])-1]!='8' && argv[3][strlen(argv[3])-1]!='9';
+        int b=argv[3][0]!='1' && argv[3][0]!='2' && argv[3][0]!='3' && argv[3][0]!='4' && argv[3][0]!='5' && argv[3][0]!='6' && argv[3][0]!='7' && argv[3][0]!='8' && argv[3][0]!='9';
+        
+        if (argv[3][0]!='+' && argv[3][0]!='-' && b && a && argv[3][strlen(argv[3])-1]!='k' && argv[3][strlen(argv[3])-1]!='c' &&argv[3][strlen(argv[3])-1]!='M' &&argv[3][strlen(argv[3])-1]!='G')
         {
-            
             printf("paramétre de -size non reconnu\n");
             return 0;
         }
@@ -152,6 +146,14 @@ int main(int argc,char* argv[])
     }
     if (!strcmp(argv[2],"-date"))
     {
+        int a=argv[3][strlen(argv[3])-1]!='1' && argv[3][strlen(argv[3])-1]!='2' && argv[3][strlen(argv[3])-1]!='3' && argv[3][strlen(argv[3])-1]!='4' && argv[3][strlen(argv[3])-1]!='5' && argv[3][strlen(argv[3])-1]!='6' && argv[3][strlen(argv[3])-1]!='7' && argv[3][strlen(argv[3])-1]!='8' && argv[3][strlen(argv[3])-1]!='9';
+        int b=argv[3][0]!='1' && argv[3][0]!='2' && argv[3][0]!='3' && argv[3][0]!='4' && argv[3][0]!='5' && argv[3][0]!='6' && argv[3][0]!='7' && argv[3][0]!='8' && argv[3][0]!='9';
+        
+        if (argv[3][0]!='+' && argv[3][0]!='-' && b && a && argv[3][strlen(argv[3])-1]!='h' && argv[3][strlen(argv[3])-1]!='m' && argv[3][strlen(argv[3])-1]!='j' && strcmp(argv[3],"now") && strcmp(argv[3],"today") && strcmp(argv[3],"yesterday") && strcmp(argv[3],"this month"))
+        {
+            printf("paramétre de -date non reconnu\n");
+            return 0;
+        }
         findallDate(argv[1],argv[3]);
         return 1;
     }
