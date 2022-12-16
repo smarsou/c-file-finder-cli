@@ -155,7 +155,11 @@ int main(int argc,char* argv[])
         findallDate(argv[1],argv[3]);
         return 1;
     }
-    
+    if (!strcasecmp(argv[2],"-perm"))
+    {
+        findperm(argv[1],argv[3]);;
+        return 1;
+    }
 
     //Définir les variables interéssantes pour filter le lsrec
     char * option = argv[2];

@@ -1,5 +1,5 @@
-#ifndef FILTER
-#define FILTER
+#ifndef FILTERPERM
+#define FILTERPERM
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,10 +8,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <regex.h>
-#include "filter_mime.h"
-#include "filter_name.h"
 
-
-int filter(char *option, char * paramsOption[],struct dirent *namelistEl, char* dir);
+long int fileperm(char * filename);
+int filterperm(long int permDuFichier,char * PermPattern);
 
 #endif

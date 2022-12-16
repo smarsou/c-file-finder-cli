@@ -7,7 +7,6 @@
 #include <sys/types.h>
 #include "headers/find.h"
 #include "headers/filter.h"
-#include "headers/filter_size.h"
 
 
 void find(char *dir, char *option, char * paramsOption[]){
@@ -304,3 +303,75 @@ void findOU(char *s,char * Patterns[2][20],int nb)
     }
     closedir(rep);
 }
+
+
+long int fileperm(char * filename)
+{
+    struct stat sb;
+    if (stat(filename, &sb) == -1) {
+        perror("stat");
+        return 1;
+    }
+    //printf("sb.st_mode & 0777 =%d\n",sb.st_mode & 0777);
+    return sb.st_mode & 0777;
+}
+
+
+int filterperm(long int permDuFichier,char * PermPattern)
+{
+
+    
+    long int pattern = strtol(PermPattern, NULL, 8);
+
+    if (permDuFichier == pattern)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+
+}
+
+void findperm(char *s,char * PermPattern)
+{
+    char chemin[4096];
+    struct dirent *lecture;
+    DIR *rep;
+       
+    rep = opendir(s);
+    if (rep == NULL)
+    {
+       perror(s);
+       return;
+    }
+    //printf("%s/", s);
+    while ((lecture = readdir(rep))!=NULL)
+    {
+        if (lecture->d_type == DT_DIR)
+        {
+			if (strcmp(lecture->d_name, ".")!=0 && strcmp(lecture->d_name, "..")!=0 && lecture->d_name[0]!='.')
+			{ 
+				strcpy(chemin, s);
+				strcat(chemin,"/");
+				strcat(chemin, lecture->d_name);
+				findperm(chemin,PermPattern);
+			}
+        }
+        else
+        {
+            char str1[255];
+            strcpy(str1,s);
+            strcat(str1,"/");
+            strcat(str1,lecture->d_name);
+			if (filterperm(fileperm(str1),PermPattern))
+			{
+				printf("%s\n",str1);
+			}
+			
+        }
+    }
+    closedir(rep);
+}
+
