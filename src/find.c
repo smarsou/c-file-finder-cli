@@ -226,3 +226,81 @@ void findET(char *s,char * Patterns[2][20],int nb)
     }
     closedir(rep);
 }
+
+void findOU(char *s,char * Patterns[2][20],int nb)
+{
+    //printf("Entered findet\n");
+    char chemin[4096];
+    struct dirent *lecture;
+    DIR *rep;
+    rep = opendir(s);
+    if (rep == NULL)
+    {
+        printf("s= %s\n",s);
+        printf("rep == null\n");
+        perror(s);
+        return;
+    }
+    while ((lecture = readdir(rep))!=NULL)
+    {
+        if (lecture->d_type == DT_DIR)
+        {
+			if (strcmp(lecture->d_name, ".")!=0 && strcmp(lecture->d_name, "..")!=0 && lecture->d_name[0]!='.')
+			{ 
+				strcpy(chemin, s);
+				strcat(chemin,"/");
+				strcat(chemin, lecture->d_name);
+                //printf("recursive call\n");
+				findOU(chemin,Patterns,nb);
+			}
+        }
+        else
+        {
+            char str1[255];
+            strcpy(str1,s);
+            strcat(str1,"/");
+            strcat(str1,lecture->d_name);
+            int test=0;
+            
+            
+            //printf("Begining filtre\n");
+            for (int i=0;i<nb;i++)
+            {
+                //printf("inside for i=%d\n",i);
+                if (!strcmp(Patterns[0][i],"-date"))
+                {
+                    test=test || filterDate(Patterns[1][i],LastTimeSinceModifiedinSeconds(str1));
+                }
+                if (!strcmp(Patterns[0][i],"-size"))
+                {
+                    test=test || filterSize(FileSize(str1),Patterns[1][i]);
+                }
+                
+                if (!strcmp(Patterns[0][i],"-name"))
+                {
+                    test=test || filterName(str1,Patterns[1][i]);
+                }
+
+                if (!strcmp(Patterns[0][i],"-dir"))
+                {
+                    test=test || filterName(str1,Patterns[1][i]);
+                }
+
+                if (!strcmp(Patterns[0][i],"-mime"))
+                {
+                    test=test || filterMime(str1,Patterns[1][i]);
+                }
+                if (!strcmp(Patterns[0][i],"-ctc"))
+                {
+                    test=test || filterName(str1,Patterns[1][i]);
+                }
+            }
+            //printf("test= %d\n",test);
+            if (test)
+            {
+                printf("%s\n",str1);
+            }
+        }
+    }
+    closedir(rep);
+}

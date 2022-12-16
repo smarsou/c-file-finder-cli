@@ -48,7 +48,7 @@ int main(int argc,char* argv[])
     }
     if (argc>4)
     {
-        int nbET=0;
+        int nbOUET=0;
         char * Patterns[2][20]={{"","","","","","","","","","","","","","","","","","","",""},{"","","","","","","","","","","","","","","","","","","",""}};
         //patterns tableau 2D qui contient les parametres et leurs options correspondants
         Patterns[0][0]=argv[2];
@@ -56,12 +56,12 @@ int main(int argc,char* argv[])
         int k=1;
         for (int i=0;i<argc;i++)
         {
-            if (!strcmp(argv[i],"ET"))
+            if (!strcmp(argv[i],"ET") || !strcmp(argv[i],"OU"))
             {
-                nbET++;
+                nbOUET++;
             }
         }
-        if (nbET)
+        if (nbOUET)
         {
             for (int i = 1; i < argc-2; i++)
             {
@@ -81,7 +81,41 @@ int main(int argc,char* argv[])
                     k++;
                 }
             }
-            findET(argv[1],Patterns,nbET+1);
+            if (!strcmp(argv[2],"-ou"))
+            {
+                Patterns[0][0]=argv[3];
+                Patterns[1][0]=argv[4];
+                k=1;
+                for (int i = 3; i < argc-2; i++)
+                {
+                    if (!strcmp(argv[i],"ET")||!strcmp(argv[i],"OU"))
+                    {
+                        Patterns[0][k]=argv[i+1];
+                        //Pattern[0] contient les noms des parametres 
+                        if (!strcmp(argv[i+2],"ET") ||!strcmp(argv[i+2],"OU"))
+                        {
+                            Patterns[1][k]="no";
+                        }
+                        else
+                        {
+                            //Pattrens contient les options des parametres correspondant si un parametre  est sans option on ajoute on
+                            Patterns[1][k]=argv[i+2];
+                            
+                        }
+                        
+                        k++;
+                    }
+                }
+                /*for (int i=0;i<nbOUET+1;i++)
+                {
+                    printf("Patterns[0][%d] = %s\n",i,Patterns[0][i]);
+                    printf("Patterns[1][%d] = %s\n",i,Patterns[1][i]);
+                }*/
+                
+                findOU(argv[1],Patterns,nbOUET+1);
+                return 1;
+            }
+            findET(argv[1],Patterns,nbOUET+1);
             return EXIT_SUCCESS;
         }
     }
