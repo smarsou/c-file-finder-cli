@@ -26,7 +26,7 @@ int filterCtc(char * path, char *pattern){
     while((c = fgetc(file)) != EOF ){
         fileAsAchar[i++]=c;
     }
-    close(file);
+    pclose(file);
     if (!evaluateRegex(fileAsAchar, pattern)){
         return 1;
     }else{

@@ -10,6 +10,10 @@ void test(char* xxxx,char * yyyy)
 {
     printf("La valeur du flag %s est %s\n",xxxx,yyyy);
 }
+int isnotnumber(char  argv)
+{
+    return argv!='1' && argv!='2' && argv!='3' && argv!='4' && argv!='5' && argv!='6' && argv!='7' && argv!='8' && argv!='9' && argv!='0';
+}
 
 int main(int argc,char* argv[])
 {
@@ -130,35 +134,91 @@ int main(int argc,char* argv[])
 
 
     if (!strcmp(argv[2],"-size"))
-    {
-        int a=argv[3][strlen(argv[3])-1]!='1' && argv[3][strlen(argv[3])-1]!='2' && argv[3][strlen(argv[3])-1]!='3' && argv[3][strlen(argv[3])-1]!='4' && argv[3][strlen(argv[3])-1]!='5' && argv[3][strlen(argv[3])-1]!='6' && argv[3][strlen(argv[3])-1]!='7' && argv[3][strlen(argv[3])-1]!='8' && argv[3][strlen(argv[3])-1]!='9';
-        int b=argv[3][0]!='1' && argv[3][0]!='2' && argv[3][0]!='3' && argv[3][0]!='4' && argv[3][0]!='5' && argv[3][0]!='6' && argv[3][0]!='7' && argv[3][0]!='8' && argv[3][0]!='9';
-        
-        if (argv[3][0]!='+' && argv[3][0]!='-' && b && a && argv[3][strlen(argv[3])-1]!='k' && argv[3][strlen(argv[3])-1]!='c' &&argv[3][strlen(argv[3])-1]!='M' &&argv[3][strlen(argv[3])-1]!='G')
+    {//Vérification du bon paramétrage
+        int d=isnotnumber(argv[3][strlen(argv[3])-1]) && argv[3][strlen(argv[3])-1]!='k' && argv[3][strlen(argv[3])-1]!='c' &&argv[3][strlen(argv[3])-1]!='M' &&argv[3][strlen(argv[3])-1]!='G';
+        if (argv[3][0]!='+' && argv[3][0]!='-' )
         {
-            printf("paramétre de -size non reconnu\n");
-            return 0;
+            int c=0;
+            for (int i = 0; i < strlen(argv[3])-1; i++)
+            {
+                
+                c=c || isnotnumber(argv[3][i]);
+
+            }
+            if (c || d)
+            {
+                printf("paramétre de -size non reconnu\n");
+                return 0;
+            } 
+        }
+        else
+        {
+            int c=0;
+            for (int i = 1; i < strlen(argv[3])-1; i++)
+            {
+                
+                c=c || isnotnumber(argv[3][i]);
+
+            }
+            if (d  || c )
+            {
+                printf("paramétre de -size non reconnu\n");
+                return 0;
+            }
         }
         
         findall(argv[1],argv[3]);
         return 0;
-        
     }
+
     if (!strcmp(argv[2],"-date"))
-    {
-        int a=argv[3][strlen(argv[3])-1]!='1' && argv[3][strlen(argv[3])-1]!='2' && argv[3][strlen(argv[3])-1]!='3' && argv[3][strlen(argv[3])-1]!='4' && argv[3][strlen(argv[3])-1]!='5' && argv[3][strlen(argv[3])-1]!='6' && argv[3][strlen(argv[3])-1]!='7' && argv[3][strlen(argv[3])-1]!='8' && argv[3][strlen(argv[3])-1]!='9';
-        int b=argv[3][0]!='1' && argv[3][0]!='2' && argv[3][0]!='3' && argv[3][0]!='4' && argv[3][0]!='5' && argv[3][0]!='6' && argv[3][0]!='7' && argv[3][0]!='8' && argv[3][0]!='9';
-        
-        if (argv[3][0]!='+' && argv[3][0]!='-' && b && a && argv[3][strlen(argv[3])-1]!='h' && argv[3][strlen(argv[3])-1]!='m' && argv[3][strlen(argv[3])-1]!='j' && strcmp(argv[3],"now") && strcmp(argv[3],"today") && strcmp(argv[3],"yesterday") && strcmp(argv[3],"this month"))
+    {//verif de bon param de date
+        int d=isnotnumber(argv[3][strlen(argv[3])-1]) && argv[3][strlen(argv[3])-1]!='m' && argv[3][strlen(argv[3])-1]!='h' &&argv[3][strlen(argv[3])-1]!='j';
+        if (argv[3][0]!='+' && argv[3][0]!='-' )
         {
-            printf("paramétre de -date non reconnu\n");
-            return 0;
+            int c=0;
+            for (int i = 0; i < strlen(argv[3])-1; i++)
+            {
+                
+                c=c || isnotnumber(argv[3][i]);
+
+            }
+            int a=strcmp(argv[3],"now") && strcmp(argv[3],"today") && strcmp(argv[3],"yesterday") && strcmp(argv[3],"this");
+            if ((c || d )&& a)
+            {
+                printf("Paramétre de -date non reconnu\n");
+                return 0;
+            } 
+        }
+        else
+        {
+            int c=0;
+            for (int i = 1; i < strlen(argv[3])-1; i++)
+            {
+                
+                c=c || isnotnumber(argv[3][i]);
+
+            }
+            printf("c=%d d=%d   case2\n",c,d);
+            if (d  || c )
+            {
+                printf("paramétre de -date non reconnu\n");
+                return 0;
+            }
         }
         findallDate(argv[1],argv[3]);
         return 1;
     }
     if (!strcasecmp(argv[2],"-perm"))
     {
+        int a=isnotnumber(argv[3][strlen(argv[3])-1]);
+        int b=isnotnumber(argv[3][0]);
+        int c=isnotnumber(argv[3][1]);
+        if (a || b || c)
+        {
+            printf("paramétre de -perm non reconnu\n");
+            return 0;
+        }
         findperm(argv[1],argv[3]);;
         return 1;
     }

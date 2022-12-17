@@ -118,10 +118,13 @@ int filterDate(char * datePattern,double dateLastModif)
 	{
 		return filterDate("-48h",dateLastModif);
 	}
-	else if (!strcmp(datePattern,"this month"))
+	else 
 	{
-		return filterDate("-720h",dateLastModif);
+		if ((!strcmp(datePattern,"this")))
+			{return filterDate("-720h",dateLastModif);}
+		return 1;
 	}
+
 }
 
 void fileLastModified(char file_name[])
