@@ -271,13 +271,22 @@ int main(int argc,char* argv[])
     }
     if (!strcmp(argv[2],"-ctc")){
         if (argc < 4){
-            printf("Erreur: Spécifiez une chaine de caractère\n");
+            perror("Erreur: Spécifiez une chaine de caractère\n");
             return EXIT_FAILURE;
         }
-        if (argc>5)
+        if (argc>4)
         {
-            printf("Erreur: Trop de paramètres\n");
-            return EXIT_FAILURE;   
+            char str2[254];
+			strcpy(str2, argv[3]);
+			strcat(str2, " ");
+            strcat(str2, argv[4]);
+            int i;
+            for (i = 5; i<argc ; i++)
+            {
+                strcat(str2, " ");
+                strcat(str2, argv[i]);
+            }
+            paramsOption[0]=str2;
         }
         find(argv[1],option,paramsOption);
     }

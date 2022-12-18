@@ -10,6 +10,7 @@
 #include "headers/filter_name.h"
 
 int filterCtc(char * path, char *pattern){
+    // printf("%s\n", pattern);
     FILE * file = fopen(path,"r");
     if ( file == NULL){
         perror("Error file not found");
@@ -32,4 +33,6 @@ int filterCtc(char * path, char *pattern){
     }else{
         return 0;
     }
+
+    // free(fileAsAchar);
 }
