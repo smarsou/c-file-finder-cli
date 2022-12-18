@@ -305,35 +305,6 @@ void findOU(char *s,char * Patterns[2][20],int nb)
 }
 
 
-long int fileperm(char * filename)
-{
-    struct stat sb;
-    if (stat(filename, &sb) == -1) {
-        perror("stat");
-        return 1;
-    }
-    //printf("sb.st_mode & 0777 =%d\n",sb.st_mode & 0777);
-    return sb.st_mode & 0777;
-}
-
-
-int filterperm(long int permDuFichier,char * PermPattern)
-{
-
-    
-    long int pattern = strtol(PermPattern, NULL, 8);
-
-    if (permDuFichier == pattern)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-
-}
-
 void findperm(char *s,char * PermPattern)
 {
     char chemin[4096];

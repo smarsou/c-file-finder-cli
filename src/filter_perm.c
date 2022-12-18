@@ -16,7 +16,6 @@ long int fileperm(char * filename)
         perror("stat");
         return 1;
     }
-    //printf("sb.st_mode & 0777 =%d\n",sb.st_mode & 0777);
     return sb.st_mode & 0777;
 }
 
